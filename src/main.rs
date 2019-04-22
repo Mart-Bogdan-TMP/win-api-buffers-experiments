@@ -1,14 +1,13 @@
-use winapi::um::winnt::HANDLE;
-use winapi::um::processenv::GetStdHandle;
-use winapi::um::fileapi::GetFinalPathNameByHandleW;
-use winapi::shared::ntdef::LPWSTR;
 use std::ffi::OsString;
+use winapi::shared::ntdef::LPWSTR;
+use winapi::um::fileapi::GetFinalPathNameByHandleW;
+use winapi::um::processenv::GetStdHandle;
+use winapi::um::winnt::HANDLE;
 
-use std::os::windows::prelude::*;
+use std::convert::TryInto;
 use std::io::stdout;
 use std::io::Write;
-use std::convert::TryInto;
-
+use std::os::windows::prelude::*;
 
 fn main() {
     unsafe {
@@ -16,12 +15,11 @@ fn main() {
         let _name = {
             let mut buf = [0u16; 2048];
 
-
             let name_len = GetFinalPathNameByHandleW(
                 handle,
                 &mut buf as *mut _ as LPWSTR,
                 (buf.len() - 1).try_into().expect("Number too big"),
-                0
+                0,
             );
 
             if name_len as usize > buf.len() - 1 {
@@ -29,14 +27,12 @@ fn main() {
                 return;
             }
 
-
             let str = OsString::from_wide(&buf[0..(name_len as usize)]);
 
             str.to_string_lossy().into_owned()
         };
 
-
         println!("STDOUT file: {}", _name);
-        let _ =stdout().flush();
+        let _ = stdout().flush();
     }
 }
