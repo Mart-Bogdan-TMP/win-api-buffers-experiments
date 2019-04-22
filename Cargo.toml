@@ -1,0 +1,8 @@
+[package]
+name = "win-api-buffers"
+version = "0.1.0"
+authors = ["Bogdan Mart <mart.bogdan@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+winapi = { version = "0.3", features = ["combaseapi", "errhandlingapi", "fileapi", "handleapi", "ioapiset", "jobapi","processenv", "jobapi2", "minwindef", "processthreadsapi", "psapi", "shlobj", "shtypes", "synchapi", "sysinfoapi", "tlhelp32", "userenv", "winbase", "winerror", "winioctl", "winnt", "winuser"] }
